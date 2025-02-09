@@ -79,12 +79,14 @@ body {
   filter: brightness(1.2);
 }
 
-.operator {
+.operator,
+#equals {
   background-color: #ff9f0a;
   color: #fff;
 }
 
-.operator:hover {
+.operator:hover,
+#equals:hover {
   filter: brightness(1.2);
 }
 

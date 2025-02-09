@@ -1,12 +1,14 @@
-let firstNum;
-let secondNum;
-let operator; 
+let firstNum; // before operator
+let secondNum; // after operator
+let operator; // + - / x
+let operation; // operation string
+let isFirstNum = true;
 
 const displayOutput = document.querySelector('#output');
 displayOutput.textContent = '0';
 
 const displayOperation = document.querySelector('#operation');
-displayOperation.textContent = 'a + b = c';
+displayOperation.textContent = '';
 
 const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach(button => {
@@ -22,21 +24,52 @@ const allClearButton = document.querySelector('#allClear');
 allClearButton.addEventListener('click', clear);
 
 function getNum(e){
-  if (firstNum === undefined){
-    firstNum = e.target.textContent;
-    displayOutput.textContent = firstNum;
+  const currentNum = e.target.textContent;
+
+  if (!operator){
+    if (isFirstNum === true) {
+      firstNum = currentNum;
+      displayOutput.textContent = firstNum;
+      isFirstNum = false;
+    } else {
+      firstNum += currentNum;
+      displayOutput.textContent = firstNum;
+    }
   } else {
-    firstNum += e.target.textContent;
-    displayOutput.textContent = firstNum;
+    if (!secondNum) {
+      secondNum = currentNum;
+      displayOperation.textContent = secondNum;
+    } else {
+      secondNum += currentNum;
+      displayOutput.textContent = secondNum;
+    }
+    displayOperation.textContent = `${firstNum} ${operator} ${secondNum}`;
   }
-  console.log(firstNum,'first');
-  return firstNum;
 }
  
 function getOperator(e) {
-  displayOutput.textContent = e.target.textContent;
+  if (firstNum === undefined) {
+
+  } else {
+    operation = firstNum + '' + e.target.textContent.trim();
     operator = e.target.textContent.trim();
+    displayOutput.textContent = operation;
+  }
   console.log(operator, 'operator');
+  return operator;
+}
+
+function operate(firstNum, secondNum, operator){
+  let outcome;
+
+  switch(operator){
+  case '+':
+    return outcome = add(firstNum, secondNum);
+    break;
+  case '-':
+    return outcome = subtract(firstNum, secondNum);
+    break;
+  }
 }
 
 function add(a, b) {
