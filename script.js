@@ -20,6 +20,9 @@ operatorButtons.forEach(button => {
   button.addEventListener('click', getOperator);
 })
 
+const equalsButton = document.querySelector('#equals');
+equalsButton.addEventListener('click', operate(firstNum, secondNum, operator));
+
 const allClearButton = document.querySelector('#allClear');
 allClearButton.addEventListener('click', clear);
 
@@ -48,31 +51,38 @@ function getNum(e){
 }
  
 function getOperator(e) {
-  if (firstNum === undefined) {
-
-  } else {
-    operation = firstNum + '' + e.target.textContent.trim();
+  if (firstNum !== undefined) {
     operator = e.target.textContent.trim();
-    displayOutput.textContent = operation;
+    displayOperation.textContent = `${firstNum} ${operator}`;
+    isFirstNum = true;
   }
-  console.log(operator, 'operator');
-  return operator;
+  console.log(operator);
 }
 
 function operate(firstNum, secondNum, operator){
+  const a = parseFloat(firstNum);
+  const b = parseFloat(secondNum);
   let outcome;
 
   switch(operator){
-  case '+':
-    return outcome = add(firstNum, secondNum);
-    break;
-  case '-':
-    return outcome = subtract(firstNum, secondNum);
-    break;
+    case '+':
+      return add(a, b);      
+      break;
+    case '-':
+      return subtract(a, b);
+      break;
+    case '×':
+      return multiply(a, b);
+      break;
+    case '÷':
+      return divide(a, b);
+      break;
+    default:
+      return null;
   }
 }
 
-function add(a, b) {
+function add(a, b) {  
   return a + b;
 };
 
@@ -85,15 +95,26 @@ function multiply(a, b) {
 };
 
 function divide(a, b) {
+  if (b === 0) {
+    return '#DIV/0!';
+  } else {
   return a / b;
+  }
 };
 
 function clear() {
   firstNum = undefined;
   secondNum = undefined;
   operator = undefined;
+  isFirstNum = true;
   displayOutput.textContent = '0';
-  console.log(firstNum,'firstNum');
-  console.log(secondNum,'secondNum');
-  console.log(operator,'operator');  
 }
+
+
+// DIAGNOSTICS
+console.log(add(4,2));
+console.log(subtract(5,2));
+console.log(subtract(1,3));
+console.log(multiply(4,2));
+console.log(divide(10,2));
+console.log(divide(4,0));
