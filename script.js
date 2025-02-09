@@ -9,6 +9,16 @@ const displayOperation = document.querySelector('#operation');
 displayOperation.textContent = 'a + b + c = 10';
 
 const numberButtons = document.querySelectorAll('.number');
+numberButtons.forEach(button => {
+  button.addEventListener('click', getNumber);
+})
+
+const operatorButtons = document.querySelectorAll('.operator');
+operatorButtons.forEach(button => {
+  button.addEventListener('click', getOperator);
+})
+
+
 
 function getNumber(e){
   displayOutput.textContent = e.target.textContent;
@@ -19,16 +29,14 @@ function getNumber(e){
   }
   console.log(firstNum,'first');
   console.log(secondNum,'second');
-  
+}
+ 
+function getOperator(e) {
+  displayOutput.textContent = e.target.textContent;
+    operator = e.target.textContent;
+  console.log(operator, 'operator');
 }
 
-
-numberButtons.forEach(button => {
-  button.addEventListener('click', getNumber);
-})
-
-
- 
 function add(a, b) {
   return a + b;
 };
