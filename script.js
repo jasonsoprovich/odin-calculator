@@ -3,6 +3,7 @@ let secondNum = ''; // Initialize as empty string
 let operator = ''; // Initialize as empty string
 let isFirstNum = true;
 let resetDisplay = false;
+const div0 = '#DIV/0!';
 
 const displayOutput = document.querySelector('#output');
 const displayOperation = document.querySelector('#operation');
@@ -81,12 +82,21 @@ function getOperator(e) {
 
   if (firstNum && secondNum && operator) {
     const result = operate(firstNum, secondNum, operator);
+    if (result === div0){
+      clear();
+      displayOutput.textContent = div0;
+      return;
+    }
     displayOutput.textContent = result;
-    firstNum = result.toString(); // Convert result to string
+    firstNum = result;
     secondNum = '';
     resetDisplay = true;
+  } else if (firstNum && !secondNum && operator){
+    operator = nextOperator;
+    displayOperation.textContent = `${firstNum} ${operator}`;
+    return;
   }
-
+  
   operator = nextOperator;
   displayOperation.textContent = `${firstNum} ${operator}`;
   updateButtonStates();
@@ -95,6 +105,13 @@ function getOperator(e) {
 function calculate() {
   if (firstNum && secondNum && operator) {
     const result = operate(firstNum, secondNum, operator);
+
+    if (result === div0) {
+      clear();
+      displayOutput.textContent = div0;
+      return;
+    }
+
     displayOperation.textContent = `${firstNum} ${operator} ${secondNum} =`;
     displayOutput.textContent = result;
 
@@ -109,8 +126,8 @@ function calculate() {
 }
 
 function operate(firstNum, secondNum, operator) {
-  const a = parseFloat(firstNum);
-  const b = parseFloat(secondNum);
+  const a = parseFloat(firstNum) || 0;
+  const b = parseFloat(secondNum) || 0;
 
   let result;
   switch (operator) {
@@ -124,6 +141,7 @@ function operate(firstNum, secondNum, operator) {
       result = multiply(a, b);
       break;
     case '÷':
+      if (b === 0) return div0;
       result = divide(a, b);
       break;
     default:
@@ -134,7 +152,7 @@ function operate(firstNum, secondNum, operator) {
     if (Number.isInteger(result)) {
       return result.toString();
     }
-    return Number(result.toFixed(8)).toString();
+    return Number(result.toFixed(8)).toString(); // handle floating point precision
   }
   return result;
 }
@@ -152,11 +170,11 @@ function multiply(a, b) {
 };
 
 function divide(a, b) {
-  if (b === 0) {
-    return '#DIV/0!';
-  } else {
+  // if (b === 0) {
+  //   return div0;
+  // } else {
     return a / b;
-  }
+  // }
 };
 
 function clear() {
@@ -172,7 +190,9 @@ function clear() {
 // DIAGNOSTICS
 console.log(add(4, 2));
 console.log(subtract(5, 2));
-console.log(subtract(1, 3));
+console.log(subtract(1, 3)); // math is working but display is not showing negatives
 console.log(multiply(4, 2));
 console.log(divide(10, 2));
 console.log(divide(4, 0));
+
+
