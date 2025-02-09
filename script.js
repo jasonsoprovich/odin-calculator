@@ -22,7 +22,7 @@ operatorButtons.forEach(button => {
 
 const equalsButton = document.querySelector('#equals');
 equalsButton.disabled = true;
-equalsButton.addEventListener('click', operate(firstNum, secondNum, operator));
+equalsButton.addEventListener('click', calculate);
 
 const allClearButton = document.querySelector('#allClear');
 allClearButton.addEventListener('click', clear);
@@ -66,6 +66,21 @@ function getOperator(e) {
     isFirstNum = true;
   }
   updateButtonStates();
+}
+
+function calculate() {
+  if (firstNum && secondNum && operator) {
+    const result = operate(firstNum, secondNum, operator);
+    displayOperation.textContent = `${firstNum} ${operator} ${secondNum} =`;
+    displayOutput.textContent = result;
+    
+    firstNum = result;
+    secondNum = undefined;
+    operator = undefined;
+    isFirstNum = true;
+
+    updateButtonStates();
+  }
 }
 
 function operate(firstNum, secondNum, operator){
@@ -112,7 +127,7 @@ function clear() {
   operator = undefined;
   isFirstNum = true;
   displayOutput.textContent = '0';
-  displayOperation = '';
+  displayOperation.textContent = '';
   updateButtonStates();
 }
 
