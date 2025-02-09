@@ -1,6 +1,6 @@
-let firstNum = ''; // Initialize as empty string
-let secondNum = ''; // Initialize as empty string
-let operator = ''; // Initialize as empty string
+let firstNum = '';
+let secondNum = '';
+let operator = '';
 let isFirstNum = true;
 let resetDisplay = false;
 const div0 = '#DIV/0!';
@@ -88,7 +88,7 @@ function getOperator(e) {
       return;
     }
     displayOutput.textContent = result;
-    firstNum = result;
+    firstNum = result.toString();
     secondNum = '';
     resetDisplay = true;
   } else if (firstNum && !secondNum && operator){
@@ -113,9 +113,15 @@ function calculate() {
     }
 
     displayOperation.textContent = `${firstNum} ${operator} ${secondNum} =`;
-    displayOutput.textContent = result;
 
-    firstNum = result.toString(); // Convert result to string
+    if (result !== undefined && result !== null) {
+      displayOutput.textContent = result;
+      firstNum = result.toString();
+    } else {
+      displayOutput.textContent = '0';
+      firstNum = '0';
+    }
+
     secondNum = '';
     operator = '';
     isFirstNum = true;
@@ -126,8 +132,12 @@ function calculate() {
 }
 
 function operate(firstNum, secondNum, operator) {
-  const a = parseFloat(firstNum) || 0;
-  const b = parseFloat(secondNum) || 0;
+  const a = parseFloat(firstNum);
+  const b = parseFloat(secondNum);
+
+  if (isNaN(a) || isNaN(b)) {
+    return '0';
+  }
 
   let result;
   switch (operator) {
@@ -144,16 +154,19 @@ function operate(firstNum, secondNum, operator) {
       if (b === 0) return div0;
       result = divide(a, b);
       break;
-    default:
-      return '0';
+  }
+
+  if (result === undefined || result === null) {
+    return '0';
   }
 
   if (typeof result === 'number') {
     if (Number.isInteger(result)) {
       return result.toString();
     }
-    return Number(result.toFixed(8)).toString(); // handle floating point precision
+    return parseFloat(result.toFixed(8)).toString();
   }
+  
   return result;
 }
 
@@ -170,11 +183,7 @@ function multiply(a, b) {
 };
 
 function divide(a, b) {
-  // if (b === 0) {
-  //   return div0;
-  // } else {
-    return a / b;
-  // }
+  return a / b;
 };
 
 function clear() {
@@ -194,5 +203,3 @@ console.log(subtract(1, 3)); // math is working but display is not showing negat
 console.log(multiply(4, 2));
 console.log(divide(10, 2));
 console.log(divide(4, 0));
-
-
