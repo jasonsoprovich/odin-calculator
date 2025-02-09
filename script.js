@@ -6,11 +6,11 @@ const displayOutput = document.querySelector('#output');
 displayOutput.textContent = '0';
 
 const displayOperation = document.querySelector('#operation');
-displayOperation.textContent = 'a + b + c = 10';
+displayOperation.textContent = 'a + b = c';
 
 const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach(button => {
-  button.addEventListener('click', getNumber);
+  button.addEventListener('click', getNum);
 })
 
 const operatorButtons = document.querySelectorAll('.operator');
@@ -18,30 +18,30 @@ operatorButtons.forEach(button => {
   button.addEventListener('click', getOperator);
 })
 
+const allClearButton = document.querySelector('#allClear');
+allClearButton.addEventListener('click', clear);
 
-
-function getNumber(e){
-  displayOutput.textContent = e.target.textContent;
+function getNum(e){
   if (firstNum === undefined){
-    firstNum=e.target.textContent;
+    firstNum = e.target.textContent;
+    displayOutput.textContent = firstNum;
   } else {
-    secondNum=e.target.textContent;
+    firstNum += e.target.textContent;
+    displayOutput.textContent = firstNum;
   }
   console.log(firstNum,'first');
-  console.log(secondNum,'second');
+  return firstNum;
 }
  
 function getOperator(e) {
   displayOutput.textContent = e.target.textContent;
-    operator = e.target.textContent;
+    operator = e.target.textContent.trim();
   console.log(operator, 'operator');
 }
 
 function add(a, b) {
   return a + b;
 };
-
-console.log(add(5,2));
 
 function subtract(a, b) {
   return a - b;
@@ -55,11 +55,12 @@ function divide(a, b) {
   return a / b;
 };
 
-
-// function clear() {
-
-// }
-
-function operate () {
-
+function clear() {
+  firstNum = undefined;
+  secondNum = undefined;
+  operator = undefined;
+  displayOutput.textContent = '0';
+  console.log(firstNum,'firstNum');
+  console.log(secondNum,'secondNum');
+  console.log(operator,'operator');  
 }
