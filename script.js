@@ -1,8 +1,8 @@
 let firstNum; // before operator
 let secondNum; // after operator
 let operator; // + - / x
-let operation; // operation string
 let isFirstNum = true;
+let resetDisplay = false;
 
 const displayOutput = document.querySelector('#output');
 const displayOperation = document.querySelector('#operation');
@@ -24,7 +24,7 @@ const equalsButton = document.querySelector('#equals');
 equalsButton.disabled = true;
 equalsButton.addEventListener('click', calculate);
 
-const allClearButton = document.querySelector('#allClear');
+const allClearButton = document.querySelector('#allClear'); 
 allClearButton.addEventListener('click', clear);
 
 function updateButtonStates() {
@@ -36,6 +36,11 @@ function updateButtonStates() {
 
 function getNum(e){
   const currentNum = e.target.textContent;
+
+  if (resetDisplay === true) {
+    displayOutput.textContent = '';
+    resetDisplay = false;
+  }
 
   if (!operator){
     if (isFirstNum === true) {
@@ -60,17 +65,26 @@ function getNum(e){
 }
  
 function getOperator(e) {
-  if (firstNum !== undefined) {
-    operator = e.target.textContent.trim();
-    displayOperation.textContent = `${firstNum} ${operator}`;
-    isFirstNum = true;
+  const nextOperator = e.target.textContent.trim();
+
+  if (firstNum && secondNum && operator) {
+    const result = operate(firstNum, secondNum, operator);
+    displayOutput.textContent = result;
+    firstNum = result;
+    secondNum = undefined;
+    resetDisplay = true;
   }
+
+  operator = nextOperator;
+  displayOperation.textContent = `${firstNum} ${operator}`;
+  
   updateButtonStates();
 }
 
 function calculate() {
   if (firstNum && secondNum && operator) {
     const result = operate(firstNum, secondNum, operator);
+
     displayOperation.textContent = `${firstNum} ${operator} ${secondNum} =`;
     displayOutput.textContent = result;
     
@@ -78,6 +92,7 @@ function calculate() {
     secondNum = undefined;
     operator = undefined;
     isFirstNum = true;
+    resetDisplay = true;
 
     updateButtonStates();
   }
