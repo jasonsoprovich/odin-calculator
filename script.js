@@ -1,6 +1,6 @@
-let firstNum; // before operator
-let secondNum; // after operator
-let operator; // + - / x
+let firstNum = ''; // Initialize as empty string
+let secondNum = ''; // Initialize as empty string
+let operator = ''; // Initialize as empty string
 let isFirstNum = true;
 let resetDisplay = false;
 
@@ -24,7 +24,9 @@ const equalsButton = document.querySelector('#equals');
 equalsButton.disabled = true;
 equalsButton.addEventListener('click', calculate);
 
-const allClearButton = document.querySelector('#allClear'); 
+const decimalButton = document.querySelector('#decimal');
+
+const allClearButton = document.querySelector('#allClear');
 allClearButton.addEventListener('click', clear);
 
 function updateButtonStates() {
@@ -32,17 +34,27 @@ function updateButtonStates() {
     button.disabled = !firstNum;
   });
   equalsButton.disabled = !(firstNum && secondNum && operator);
+
+  const activeNum = !operator ? firstNum : secondNum;
+  decimalButton.disabled = activeNum.includes('.');
 }
 
-function getNum(e){
+function getNum(e) {
   const currentNum = e.target.textContent;
+
+  if (currentNum === '.') {
+    const activeNum = !operator ? firstNum : secondNum;
+    if (activeNum.includes('.')) {
+      return;
+    }
+  }
 
   if (resetDisplay === true) {
     displayOutput.textContent = '';
     resetDisplay = false;
   }
 
-  if (!operator){
+  if (!operator) {
     if (isFirstNum === true) {
       firstNum = currentNum;
       displayOutput.textContent = firstNum;
@@ -54,7 +66,7 @@ function getNum(e){
   } else {
     if (!secondNum) {
       secondNum = currentNum;
-      displayOperation.textContent = secondNum;
+      displayOutput.textContent = secondNum;
     } else {
       secondNum += currentNum;
       displayOutput.textContent = secondNum;
@@ -63,34 +75,32 @@ function getNum(e){
   }
   updateButtonStates();
 }
- 
+
 function getOperator(e) {
   const nextOperator = e.target.textContent.trim();
 
   if (firstNum && secondNum && operator) {
     const result = operate(firstNum, secondNum, operator);
     displayOutput.textContent = result;
-    firstNum = result;
-    secondNum = undefined;
+    firstNum = result.toString(); // Convert result to string
+    secondNum = '';
     resetDisplay = true;
   }
 
   operator = nextOperator;
   displayOperation.textContent = `${firstNum} ${operator}`;
-  
   updateButtonStates();
 }
 
 function calculate() {
   if (firstNum && secondNum && operator) {
     const result = operate(firstNum, secondNum, operator);
-
     displayOperation.textContent = `${firstNum} ${operator} ${secondNum} =`;
     displayOutput.textContent = result;
-    
-    firstNum = result;
-    secondNum = undefined;
-    operator = undefined;
+
+    firstNum = result.toString(); // Convert result to string
+    secondNum = '';
+    operator = '';
     isFirstNum = true;
     resetDisplay = true;
 
@@ -98,25 +108,38 @@ function calculate() {
   }
 }
 
-function operate(firstNum, secondNum, operator){
+function operate(firstNum, secondNum, operator) {
   const a = parseFloat(firstNum);
   const b = parseFloat(secondNum);
 
-  switch(operator) {
+  let result;
+  switch (operator) {
     case '+':
-      return add(a, b);      
+      result = add(a, b);
+      break;
     case '-':
-      return subtract(a, b);
+      result = subtract(a, b);
+      break;
     case '×':
-      return multiply(a, b);
+      result = multiply(a, b);
+      break;
     case '÷':
-      return divide(a, b);
+      result = divide(a, b);
+      break;
     default:
-      return null;
+      return '0';
   }
+
+  if (typeof result === 'number') {
+    if (Number.isInteger(result)) {
+      return result.toString();
+    }
+    return Number(result.toFixed(8)).toString();
+  }
+  return result;
 }
 
-function add(a, b) {  
+function add(a, b) {
   return a + b;
 };
 
@@ -132,25 +155,24 @@ function divide(a, b) {
   if (b === 0) {
     return '#DIV/0!';
   } else {
-  return a / b;
+    return a / b;
   }
 };
 
 function clear() {
-  firstNum = undefined;
-  secondNum = undefined;
-  operator = undefined;
+  firstNum = '';
+  secondNum = '';
+  operator = '';
   isFirstNum = true;
   displayOutput.textContent = '0';
   displayOperation.textContent = '';
   updateButtonStates();
 }
 
-
 // DIAGNOSTICS
-console.log(add(4,2));
-console.log(subtract(5,2));
-console.log(subtract(1,3));
-console.log(multiply(4,2));
-console.log(divide(10,2));
-console.log(divide(4,0));
+console.log(add(4, 2));
+console.log(subtract(5, 2));
+console.log(subtract(1, 3));
+console.log(multiply(4, 2));
+console.log(divide(10, 2));
+console.log(divide(4, 0));
