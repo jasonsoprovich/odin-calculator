@@ -84,6 +84,9 @@ function handleEquals() {
     if (result === DIVIDE_BY_ZERO_ERROR) {
       displayOutput.textContent = DIVIDE_BY_ZERO_ERROR;
       clear();
+    } else if (isNaN(result)) {
+      displayOutput.textContent = 'Error';
+      clear();
     } else {
       firstNum = String(result);
       displayOutput.textContent = firstNum;
@@ -98,6 +101,8 @@ function handleEquals() {
 }
 
 function operate(a, b, operator) {
+  a = Number(a);
+  b = Number(b);
   switch (operator) {
     case '+': return a + b;
     case '-': return a - b;
