@@ -16,6 +16,7 @@ const equalsButton = document.querySelector('#equals');
 const decimalButton = document.querySelector('#decimal');
 const allClearButton = document.querySelector('#allClear');
 const plusMinusButton = document.querySelector('#plusMinus');
+const percentButton = document.querySelector('#percent');
 
 // Initialize display
 updateDisplay();
@@ -27,6 +28,7 @@ equalsButton.addEventListener('click', handleEquals);
 decimalButton.addEventListener('click', handleDecimalInput);
 allClearButton.addEventListener('click', clear);
 plusMinusButton.addEventListener('click', handlePlusMinus);
+percentButton.addEventListener('click', handlePercent);
 
 // Add keyboard support event listener
 document.addEventListener('keydown', (event) => handleKeyPress(event.key));
@@ -124,6 +126,7 @@ function handleKeyPress(key) {
     case '-': return handleOperatorInput({ target: { textContent: '-' } });
     case '*': return handleOperatorInput({ target: { textContent: '×' } });
     case '/': return handleOperatorInput({ target: { textContent: '÷' } });
+    case '%': return handleOperatorInput({ target: { textContent: '%' } });
     case '0':
     case '1': 
     case '2': 
@@ -162,6 +165,21 @@ function handleEquals() {
     updateDisplay();
     updateButtonStates();
   }
+}
+
+function handlePercent(e){
+  if (!operator) {
+    if (firstNum) {
+      firstNum = String(Number(firstNum) / 100);
+    }
+  } else {
+    if (secondNum) {
+      secondNum = String(Number(secondNum) / 100);
+    }
+  }
+  document.activeElement.blur();
+  updateDisplay();
+  updateButtonStates();
 }
 
 function operate(a, b, operator) {
