@@ -53,9 +53,9 @@ function handleNumberInput(e) {
     secondNum += num;
   }
   
-  document.activeElement.blur();
   updateDisplay();
   updateButtonStates();
+  document.activeElement.blur();
 }
 
 function handlePlusMinus(e) {
@@ -126,7 +126,7 @@ function handleKeyPress(key) {
     case '-': return handleOperatorInput({ target: { textContent: '-' } });
     case '*': return handleOperatorInput({ target: { textContent: '×' } });
     case '/': return handleOperatorInput({ target: { textContent: '÷' } });
-    case '%': return handleOperatorInput({ target: { textContent: '%' } });
+    case '%': return handlePercent();
     case '0':
     case '1': 
     case '2': 
@@ -161,9 +161,9 @@ function handleEquals() {
       secondNum = '';
       resetDisplay = true;
     }
-    document.activeElement.blur();
     updateDisplay();
     updateButtonStates();
+    document.activeElement.blur();
   }
 }
 
@@ -174,12 +174,16 @@ function handlePercent(e){
     }
   } else {
     if (secondNum) {
-      secondNum = String(Number(secondNum) / 100);
+      if (operator === '+' || operator === '-') {
+        secondNum = String(Number(firstNum) * (Number(secondNum) / 100));
+      } else if (operator === '×' || operator === '÷') {
+        secondNum = String(Number(secondNum) / 100);
+      }
     }
   }
-  document.activeElement.blur();
   updateDisplay();
   updateButtonStates();
+  document.activeElement.blur();
 }
 
 function operate(a, b, operator) {
@@ -190,6 +194,7 @@ function operate(a, b, operator) {
     case '-': return a - b;
     case '×': return a * b;
     case '÷': return b === 0 ? DIVIDE_BY_ZERO_ERROR : a / b;
+    case '%': return b * (a / 100);
     default: return NaN;
   }
 }
