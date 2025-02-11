@@ -70,6 +70,10 @@ body {
   flex-shrink: 0;
 }
 
+.button:focus {
+  outline: none;
+}
+
 .control {
   background-color: #a5a5a5;
   color: #1c1c1c;
