@@ -15,6 +15,7 @@ const operatorButtons = document.querySelectorAll('.operator');
 const equalsButton = document.querySelector('#equals');
 const decimalButton = document.querySelector('#decimal');
 const allClearButton = document.querySelector('#allClear');
+const plusMinusButton = document.querySelector('#plusMinus');
 
 // Initialize display
 updateDisplay();
@@ -25,6 +26,8 @@ operatorButtons.forEach(button => button.addEventListener('click', handleOperato
 equalsButton.addEventListener('click', handleEquals);
 decimalButton.addEventListener('click', handleDecimalInput);
 allClearButton.addEventListener('click', clear);
+plusMinusButton.addEventListener('click', handlePlusMinus);
+
 // Add keyboard support event listener
 document.addEventListener('keydown', (event) => handleKeyPress(event.key));
 
@@ -49,6 +52,24 @@ function handleNumberInput(e) {
   }
   
   document.activeElement.blur();
+  updateDisplay();
+  updateButtonStates();
+}
+
+function handlePlusMinus(e) {
+  if (!operator) {
+    if (firstNum.startsWith('-')) {
+      firstNum = firstNum.slice(1);
+    } else {
+      firstNum = '-' + firstNum;
+    }
+  } else {
+    if (secondNum.startsWith('-')) {
+      secondNum = secondNum.slice(1);
+    } else {
+      secondNum = '-' + secondNum;
+    }
+  }
   updateDisplay();
   updateButtonStates();
 }
