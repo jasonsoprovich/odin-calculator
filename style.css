@@ -19,10 +19,53 @@ body {
   width: 100%;
   max-width: 280px;
   border-radius: 30px;
-  border-color: #fff;
+  /* border-color: #fff;
   border-style: solid;
-  border-width: 2px;
+  border-width: 2px; */
+  position: relative;
+  background-color: #000;
 }
+
+/* animated border start*/
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.main-container::after,
+.main-container::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  padding: 2px;
+  border-radius: 30px;
+  background-image: conic-gradient(from var(--angle), #ff9f0a, #d2d2d2, #ff9f0a);
+  animation: 3s spin linear infinite;
+}
+
+.main-container::before {
+  filter: blur(0.5rem);
+  opacity: 0.5;
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* animated border end */
 
 #operation {
   color: #d2d2d2;
