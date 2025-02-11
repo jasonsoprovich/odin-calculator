@@ -13,3 +13,9 @@ be entered once in each number string to prevent errors. Divide by zero errors
 are also handled with an error message.
 
 Keyboard support includes 0-9 keys, +, -, *, /, =, Enter (=), and Escape (AC).
+
+Added: % functionality
+Added: animated glowing border
+
+Current bugs:
+- percentage of another number is not working correctly
