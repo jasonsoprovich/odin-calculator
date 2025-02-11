@@ -27,7 +27,7 @@ decimalButton.addEventListener('click', handleDecimalInput);
 allClearButton.addEventListener('click', clear);
 
 // Keyboard Support
-document.addEventListener('keyup', (event) => handleKeyPress(event.key));
+document.addEventListener('keydown', (event) => handleKeyPress(event.key));
 
 // Functions
 function updateDisplay() {
