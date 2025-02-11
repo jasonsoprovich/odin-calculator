@@ -124,7 +124,7 @@ function handleKeyPress(key) {
 
 function handleEquals() {
   if (firstNum && secondNum && operator) {
-    const result = operate(Number(firstNum), Number(secondNum), operator);
+    let result = operate(Number(firstNum), Number(secondNum), operator);
 
     if (result === DIVIDE_BY_ZERO_ERROR) {
       displayOutput.textContent = DIVIDE_BY_ZERO_ERROR;
@@ -133,6 +133,7 @@ function handleEquals() {
       displayOutput.textContent = 'Error';
       clear();
     } else {
+      result = Number(result.toFixed(8));
       firstNum = String(result);
       displayOutput.textContent = firstNum;
       operator = null;
