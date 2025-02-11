@@ -26,6 +26,9 @@ equalsButton.addEventListener('click', handleEquals);
 decimalButton.addEventListener('click', handleDecimalInput);
 allClearButton.addEventListener('click', clear);
 
+// Keyboard Support
+document.addEventListener('keyup', (event) => handleKeyPress(event.key));
+
 // Functions
 function updateDisplay() {
   displayOutput.textContent = firstNum || '0';
@@ -45,14 +48,15 @@ function handleNumberInput(e) {
   } else {
     secondNum += num;
   }
-
+  
+  document.activeElement.blur();
   updateDisplay();
   updateButtonStates();
 }
 
 function handleOperatorInput(e) {
   const newOperator = e.target.textContent;
-
+  
   if (firstNum) {
     if (secondNum) {
       handleEquals();
@@ -69,11 +73,52 @@ function handleDecimalInput(e) {
     firstNum = '';
     resetDisplay = false;
   }
-
+  
   if (!firstNum.includes('.')) {
     firstNum += '.';
     updateDisplay();
     updateButtonStates();
+  }
+}
+
+function handleKeyPress(key) {
+
+
+  switch (key) {
+    case 'Backspace': 
+      if (!operator) {
+        if (firstNum) {
+          firstNum = firstNum.slice(0, -1);
+          updateDisplay();
+          updateDisplay();
+        }
+      } else {
+        if (secondNum) {
+        secondNum = secondNum.slice(0, -1);
+        updateDisplay();
+        updateDisplay();
+        }
+      }
+      return console.log('delete');
+    case '=':
+    case 'Enter':
+      return handleEquals();    
+    case '+': return console.log('plus'); //return a + b;
+    case '-': return console.log('subtract'); //return a - b;
+    case '*': return console.log('multiply'); //return a * b;
+    case '/': return console.log('divide'); //return b === 0 ? DIVIDE_BY_ZERO_ERROR : a / b;
+    case '1': return console.log('1');
+    case '2': return console.log('2');
+    case '3': return console.log('3');
+    case '4': return console.log('4');
+    case '5': return console.log('5');
+    case '6': return console.log('6');
+    case '7': return console.log('7');
+    case '8': return console.log('8');
+    case '9': return console.log('9');
+    case '0': return console.log('0');
+    case 'Escape': return clear();
+    default: return null;
   }
 }
 
@@ -94,7 +139,7 @@ function handleEquals() {
       secondNum = '';
       resetDisplay = true;
     }
-
+    document.activeElement.blur();
     updateDisplay();
     updateButtonStates();
   }
