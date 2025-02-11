@@ -1,13 +1,13 @@
-// State variables
+// Declare variables
 let firstNum = '';
 let secondNum = '';
 let operator = null;
 let resetDisplay = false;
 
-// Constants
+// Declare constants
 const DIVIDE_BY_ZERO_ERROR = '#DIV/0!';
 
-// DOM elements
+// Assign DOM elements
 const displayOutput = document.querySelector('#output');
 const displayOperation = document.querySelector('#operation');
 const numberButtons = document.querySelectorAll('.number');
@@ -19,14 +19,13 @@ const allClearButton = document.querySelector('#allClear');
 // Initialize display
 updateDisplay();
 
-// Event listeners
+// Add event listeners
 numberButtons.forEach(button => button.addEventListener('click', handleNumberInput));
 operatorButtons.forEach(button => button.addEventListener('click', handleOperatorInput));
 equalsButton.addEventListener('click', handleEquals);
 decimalButton.addEventListener('click', handleDecimalInput);
 allClearButton.addEventListener('click', clear);
-
-// Keyboard Support
+// Add keyboard support event listener
 document.addEventListener('keydown', (event) => handleKeyPress(event.key));
 
 // Functions
