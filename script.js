@@ -100,10 +100,10 @@ function handleKeyPress(key) {
     case '=':
     case 'Enter':
       return handleEquals();    
-    case '+': return console.log('plus'); //return a + b;
-    case '-': return console.log('subtract'); //return a - b;
-    case '*': return console.log('multiply'); //return a * b;
-    case '/': return console.log('divide'); //return b === 0 ? DIVIDE_BY_ZERO_ERROR : a / b;
+    case '+': return handleOperatorInput({ target: { textContent: '+' } });
+    case '-': return handleOperatorInput({ target: { textContent: '-' } });
+    case '*': return handleOperatorInput({ target: { textContent: '×' } });
+    case '/': return handleOperatorInput({ target: { textContent: '÷' } });
     case '0':
     case '1': 
     case '2': 
